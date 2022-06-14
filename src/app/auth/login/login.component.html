@@ -1,0 +1,47 @@
+<div class="container mt-5">
+	<h1 class="fw-bold row justify-content-center">Inicio de sesión</h1>
+  
+	<div class="row justify-content-center">
+	  <div class="col-md-6 col-lg-4">
+		<form autocomplete="off" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+		  <mat-form-field appearance="outline" class="d-block">
+			<mat-label>Correo</mat-label>
+			<input
+			  matInput
+			  type="text"
+			  placeholder="Correo"
+			  name="correo"
+			  [(ngModel)]="login.correo"
+			  #correo="ngModel"
+			  required
+			/>
+  
+			<mat-error *ngIf="correo.hasError('required')">
+			  Este campo es obligatorio
+			</mat-error>
+		  </mat-form-field>
+  
+		  <mat-form-field appearance="outline" class="d-block">
+			<mat-label>Contraseña</mat-label>
+			<input
+			  matInput
+			  type="password"
+			  placeholder="Contraseña"
+			  name="password"
+			  [(ngModel)]="login.password"
+			  #password="ngModel"
+			  required
+			/>
+  
+			<mat-error *ngIf="password.hasError('required')">
+			  Este campo es obligatorio
+			</mat-error>
+		  </mat-form-field>
+  
+		  <button mat-raised-button color="primary" class="mt-5 w-100" [disabled]="loginForm.invalid">
+			Ingresar
+		  </button>
+		</form>
+	  </div>
+	</div>
+  </div>

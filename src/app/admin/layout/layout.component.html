@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+	<span>BonoPower</span>
+    <button mat-button routerLink="/admin/bonos" class="ms-2">Historial</button>
+	<button mat-button routerLink="/admin/bonos/nuevo" class="ms-2">Bono</button>
+	<button mat-button routerLink="/admin/bonos/nuevo" class="ms-2">Calcular</button>
+	<button mat-button routerLink="/admin/bonos/nuevo" class="ms-2">FAQ</button>
+
+	<span class="spacer"></span>
+
+	<button mat-button [matMenuTriggerFor]="menu">
+		<mat-icon>account_circle</mat-icon> Usuario
+	</button>
+
+	<mat-menu #menu="matMenu">
+		<button mat-menu-item (click)="verPerfil()">
+		<mat-icon>account_circle</mat-icon> Ver perfil
+		</button>
+		<button mat-menu-item (click)="signOut()">
+		<mat-icon>logout</mat-icon> Cerrar sesión
+		</button>
+	</mat-menu>
+
+</mat-toolbar>
+
+<router-outlet></router-outlet>

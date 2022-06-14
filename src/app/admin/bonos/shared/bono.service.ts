@@ -1,0 +1,29 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Bono, BonoReq } from './bono.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BonoService {
+
+  private apiBase: string = environment.apiBase;
+
+  constructor(private http:HttpClient) { }
+
+  getAll(){
+    return this.http.get<Bono[]>(`${this.apiBase}/bonos/listar`)
+  }
+
+  createBono(bonoReq:BonoReq){
+    return this.http.post(`${this.apiBase}/bonos/agregar`, bonoReq)
+  }
+
+  deleteBono(id: number){
+    return this.http.delete(`${this.apiBase}/bonos/${id}`)
+  }
+  editBono(id:number, bonoReq:BonoReq){
+    return this.http.put(`${this.apiBase}/bonos/${id}`, bonoReq)
+  }
+}

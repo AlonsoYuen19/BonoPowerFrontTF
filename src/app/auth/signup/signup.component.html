@@ -1,0 +1,74 @@
+<div class="container mt-5">
+	<h1 class="fw-bold row justify-content-center">Registrar</h1>
+  
+	<div class="row justify-content-center">
+	  <div class="col-md-6 col-lg-4">
+		<form autocomplete="off" (ngSubmit)="onSubmit()" #signupForm="ngForm">
+		  <mat-form-field appearance="outline" class="d-block">
+			<mat-label>Correo</mat-label>
+			<input
+			  matInput
+			  type="text"
+			  placeholder="Correo"
+			  name="correo"
+			  [(ngModel)]="signup.correo"
+			  #correo="ngModel"
+			  required
+			/>
+			<mat-error *ngIf="correo.hasError('required')">
+			  Este campo es obligatorio
+			</mat-error>
+		  </mat-form-field>
+  
+		  <mat-form-field appearance="outline" class="d-block">
+			<mat-label>Contraseña</mat-label>
+			<input
+			  matInput
+			  type="password"
+			  placeholder="Contraseña"
+			  name="password"
+			  [(ngModel)]="signup.password"
+			  #password="ngModel"
+			  required
+			/>
+			<mat-error *ngIf="password.hasError('required')">
+			  Este campo es obligatorio
+			</mat-error>
+		  </mat-form-field>
+
+		  <mat-form-field appearance="outline" class="d-block">
+			<mat-label>Nombre</mat-label>
+			<input
+			  matInput
+			  type="text"
+			  placeholder="Nombre"
+			  name="nombre"
+			  [(ngModel)]="signup.nombres"
+			  #nombre="ngModel"
+			  required
+			/>
+			<mat-error *ngIf="nombre.hasError('required')">
+			  Este campo es obligatorio
+			</mat-error>
+		  </mat-form-field>
+
+		  <section class="example-section">
+			<mat-checkbox name="number" class="example-margin" [(ngModel)]="checked" (click)="openTerms()" #tipou="ngModel" required>
+				¿Estas deacuerdo con los términos y condiciones?
+			</mat-checkbox>
+			<span class="link-terms" (click)="openTerms()">Leer</span>
+			<mat-error *ngIf="tipou.hasError('required')">
+				Este campo es obligatorio
+			</mat-error>
+			
+		  </section>
+  
+		  <button mat-raised-button color="primary" class="mt-5 w-100" [disabled]="signupForm.invalid">
+			Registrar
+		  </button>
+
+		</form>
+	  </div>
+	</div>
+  </div>
+  
