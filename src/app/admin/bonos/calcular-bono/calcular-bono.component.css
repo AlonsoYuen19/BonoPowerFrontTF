@@ -1,0 +1,16 @@
+.tabla_ancho{
+    width: 75%;
+}
+
+.espacio_final{
+    margin-top: 20px;
+}
+
+.botones{
+    margin-top: 20px;
+    min-width: 20% !important;
+}
+
+.area_botones{
+    width: 20% !important;
+}

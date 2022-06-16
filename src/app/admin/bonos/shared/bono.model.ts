@@ -66,3 +66,13 @@ export interface InflacionReq {
     Anio: number;
     Inflacion: number;
 }
+
+export interface ObjetoTabla {
+    Indice: number;
+    Cupon_Interes: number;
+    Flujo_Escudo: number;
+    Flujo_Bonista: number;
+    Flujo_Actual: number;
+    FlujoXPlazo: number;
+    Factor_Convexividad: number;
+}
