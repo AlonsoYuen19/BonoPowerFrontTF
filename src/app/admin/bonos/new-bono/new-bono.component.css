@@ -1,0 +1,20 @@
+.linea{
+    min-width: 70% !important;
+}
+
+.botones{
+    margin-top: 20px;
+    min-width: 25% !important;
+}
+
+.botones_finales{
+    min-width: 25% !important;
+}
+
+.area_botones{
+    width: 10% !important;
+}
+
+.espacio_final{
+    margin-top: 50px;
+}

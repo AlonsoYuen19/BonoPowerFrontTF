@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EditBonoComponent } from './bonos/edit-bono/edit-bono.component';
+import { CalcularBonoComponent } from './bonos/calcular-bono/calcular-bono.component';
 import { ListBonoComponent } from './bonos/list-bono/list-bono.component';
 import { NewBonoComponent } from './bonos/new-bono/new-bono.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -18,8 +18,8 @@ const routes: Routes = [{
       component:NewBonoComponent,
     },
     {
-      path:'bonos/:id/editar',
-      component:EditBonoComponent,
+      path:'bonos/calcular/:id',
+      component:CalcularBonoComponent,
     },
     //{
       //path:'usuario',

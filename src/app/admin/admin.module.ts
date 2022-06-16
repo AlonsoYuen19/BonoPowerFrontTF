@@ -8,7 +8,7 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewBonoComponent } from './bonos/new-bono/new-bono.component';
 import { ListBonoComponent } from './bonos/list-bono/list-bono.component';
-import { EditBonoComponent } from './bonos/edit-bono/edit-bono.component';
+import { CalcularBonoComponent } from './bonos/calcular-bono/calcular-bono.component';
 
 
 @NgModule({
@@ -17,7 +17,7 @@ import { EditBonoComponent } from './bonos/edit-bono/edit-bono.component';
     
     NewBonoComponent,
     ListBonoComponent,
-    EditBonoComponent
+    CalcularBonoComponent,
   ],
   imports: [
     CommonModule,

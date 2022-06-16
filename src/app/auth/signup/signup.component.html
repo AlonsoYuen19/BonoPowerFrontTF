@@ -5,6 +5,22 @@
 	  <div class="col-md-6 col-lg-4">
 		<form autocomplete="off" (ngSubmit)="onSubmit()" #signupForm="ngForm">
 		  <mat-form-field appearance="outline" class="d-block">
+				<mat-label>Nombre</mat-label>
+				<input
+				  matInput
+				  type="text"
+				  placeholder="Nombre"
+				  name="nombre"
+				  [(ngModel)]="signup.nombres"
+				  #nombre="ngModel"
+				  required
+				/>
+				<mat-error *ngIf="nombre.hasError('required')">
+				  Este campo es obligatorio
+				</mat-error>
+		  </mat-form-field>
+			
+		  <mat-form-field appearance="outline" class="d-block">
 			<mat-label>Correo</mat-label>
 			<input
 			  matInput
@@ -32,22 +48,6 @@
 			  required
 			/>
 			<mat-error *ngIf="password.hasError('required')">
-			  Este campo es obligatorio
-			</mat-error>
-		  </mat-form-field>
-
-		  <mat-form-field appearance="outline" class="d-block">
-			<mat-label>Nombre</mat-label>
-			<input
-			  matInput
-			  type="text"
-			  placeholder="Nombre"
-			  name="nombre"
-			  [(ngModel)]="signup.nombres"
-			  #nombre="ngModel"
-			  required
-			/>
-			<mat-error *ngIf="nombre.hasError('required')">
 			  Este campo es obligatorio
 			</mat-error>
 		  </mat-form-field>

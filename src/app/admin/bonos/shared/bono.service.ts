@@ -20,10 +20,11 @@ export class BonoService {
     return this.http.post(`${this.apiBase}/bonos/agregar`, bonoReq)
   }
 
+  getBonoById(id: number){
+    return this.http.get<Bono>(`${this.apiBase}/bonos/${id}`)
+  }
+
   deleteBono(id: number){
     return this.http.delete(`${this.apiBase}/bonos/${id}`)
-  }
-  editBono(id:number, bonoReq:BonoReq){
-    return this.http.put(`${this.apiBase}/bonos/${id}`, bonoReq)
   }
 }

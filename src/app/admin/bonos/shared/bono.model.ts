@@ -4,19 +4,24 @@ export interface Periodo {
     dias: number;
 }
 
-export interface Bono {
-    id: number;
+export interface PeriodoReq {
     nombre: string;
-    fecha: Date;
-    importancia: number;
+    dias: number;
+}
+
+export interface Bono {
+    Id: number;
+    Nombre: string;
+    Fecha: Date;
+    Importancia: number;
     VN: number;
     VC: number;
     Anios: number;
-    Periodo_Cupon: Periodo;
+    Periodo_Cupon_id: number;
     Plazo_Gracia: number;
     DXA: number;
     Tipo_Tasa: string;
-    Periodo_Capitalizacion: Periodo;
+    Periodo_Capitalizacion_id: number;
     P_Tasa_Interes: number;
     P_Tasa_Anual_Descuento: number;
     P_Impuesto: number;
@@ -29,17 +34,16 @@ export interface Bono {
 }
 
 export interface BonoReq {
-    nombre: string;
-    fecha: Date;
-    importancia: number;
+    Nombre: string;
+    Importancia: number;
     VN: number;
     VC: number;
     Anios: number;
-    Periodo_Cupon: Periodo;
+    Periodo_Cupon_id: number;
     Plazo_Gracia: number;
     DXA: number;
     Tipo_Tasa: string;
-    Periodo_Capitalizacion: Periodo;
+    Periodo_Capitalizacion_id: number;
     P_Tasa_Interes: number;
     P_Tasa_Anual_Descuento: number;
     P_Impuesto: number;
@@ -49,4 +53,16 @@ export interface BonoReq {
     P_Colocacion: number;
     P_Flotacion: number;
     P_Cavali: number;
+}
+
+export interface Inflacion {	
+    id: number;
+    Bono_id: number;
+    Anio: number;
+    Inflacion: number;
+}
+
+export interface InflacionReq {
+    Anio: number;
+    Inflacion: number;
 }
