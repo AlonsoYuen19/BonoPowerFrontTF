@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-around" style="margin: 20px;">
+<div class="fw-bold d-flex justify-content-around" style="margin: 20px;">
     <h2>DATOS DEL BONO</h2>
     <h2>DATOS DE COSTES</h2>
 </div>
@@ -352,7 +352,7 @@
           </div>
 
           <div class="d-flex justify-content-center">
-            <button mat-raised-button color="primary" class="botones">
+            <button mat-raised-button type="button" (click)="agregarInflacion()" color="primary" class="botones">
               AGREGAR INFLACIÓN
             </button>
 
@@ -360,7 +360,7 @@
 
             </div>
 
-            <button mat-raised-button color="primary" class="botones">
+            <button mat-raised-button type="button" (click)="eliminarInflacion()" color="primary" class="botones" [disabled]="verif()">
               ELIMINAR INFLACIÓN
             </button>
           </div>

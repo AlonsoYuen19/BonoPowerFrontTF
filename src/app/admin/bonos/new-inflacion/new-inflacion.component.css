@@ -1,0 +1,13 @@
+.new-inflacion-view{
+    float: left;
+    width: 40%;
+    display: block;
+    padding: 20px;
+}
+
+.new-inflacion-form{
+    float: right;
+    width: 60%;
+    display: block;
+    padding-right: 15%;
+}

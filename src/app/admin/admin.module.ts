@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewBonoComponent } from './bonos/new-bono/new-bono.component';
 import { ListBonoComponent } from './bonos/list-bono/list-bono.component';
 import { CalcularBonoComponent } from './bonos/calcular-bono/calcular-bono.component';
+import { NewInflacionComponent } from './bonos/new-inflacion/new-inflacion.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CalcularBonoComponent } from './bonos/calcular-bono/calcular-bono.compo
     NewBonoComponent,
     ListBonoComponent,
     CalcularBonoComponent,
+    NewInflacionComponent,
   ],
   imports: [
     CommonModule,

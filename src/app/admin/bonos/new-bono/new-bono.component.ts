@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { NewInflacionComponent } from '../new-inflacion/new-inflacion.component';
 import { InflacionReq } from '../shared/bono.model';
 import { BonoService } from '../shared/bono.service';
 
@@ -90,11 +92,13 @@ export class NewBonoComponent implements OnInit {
     }
   ]
 
+  inflacion: any
+
   displayedColumns: string[] = ['Año', 'Inflación'];
   dataSource = this.inflaciones;
 
 
-  constructor(private bonoService:BonoService, private router:Router) { }
+  constructor(private bonoService:BonoService, private router:Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -138,11 +142,32 @@ export class NewBonoComponent implements OnInit {
   }
 
   agregarInflacion(){
+    const dialogRef = this.dialog.open(NewInflacionComponent, {
+      width: '500px',
+      data: {Anio: null, Inflacion: null},
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if(result != undefined){
+        this.dataSource.push(result);
+        this.dataSource= [...this.dataSource];
+      }
+    });
   }
 
   eliminarInflacion(){
+    this.dataSource.pop();
+    this.dataSource= [...this.dataSource];
+  }
 
+  verif(){
+    if(this.dataSource.length > 0){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
 }
