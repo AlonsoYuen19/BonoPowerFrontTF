@@ -10,6 +10,8 @@ import { NewBonoComponent } from './bonos/new-bono/new-bono.component';
 import { ListBonoComponent } from './bonos/list-bono/list-bono.component';
 import { CalcularBonoComponent } from './bonos/calcular-bono/calcular-bono.component';
 import { NewInflacionComponent } from './bonos/new-inflacion/new-inflacion.component';
+import { ResultsBonoComponent } from './bonos/results-bono/results-bono/results-bono.component';
+import { UsuarioInfoComponent } from './bonos/usuario-info/usuario-info/usuario-info.component';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import { NewInflacionComponent } from './bonos/new-inflacion/new-inflacion.compo
     ListBonoComponent,
     CalcularBonoComponent,
     NewInflacionComponent,
+    ResultsBonoComponent,
+    UsuarioInfoComponent,
   ],
   imports: [
     CommonModule,

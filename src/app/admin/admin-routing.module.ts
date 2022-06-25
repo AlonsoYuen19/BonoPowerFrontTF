@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CalcularBonoComponent } from './bonos/calcular-bono/calcular-bono.component';
 import { ListBonoComponent } from './bonos/list-bono/list-bono.component';
 import { NewBonoComponent } from './bonos/new-bono/new-bono.component';
+import { ResultsBonoComponent } from './bonos/results-bono/results-bono/results-bono.component';
+import { UsuarioInfoComponent } from './bonos/usuario-info/usuario-info/usuario-info.component';
 import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [{
@@ -21,10 +23,14 @@ const routes: Routes = [{
       path:'bonos/calcular/:id',
       component:CalcularBonoComponent,
     },
-    //{
-      //path:'usuario',
-      //component:UsuarioInfoComponent
-    //},
+    {
+      path:'bonos/resultados',
+      component: ResultsBonoComponent,
+    },
+    {
+      path:'usuario',
+      component:UsuarioInfoComponent
+    },
   ]
 }];
 
