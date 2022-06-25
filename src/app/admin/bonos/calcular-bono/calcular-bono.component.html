@@ -13,7 +13,7 @@
       
             <!-- Cupon Interes Column -->
             <ng-container matColumnDef="Cupon_Interes">
-              <th mat-header-cell *matHeaderCellDef> Cupon Interes </th>
+              <th mat-header-cell *matHeaderCellDef> Cupon (Interes) </th>
               <td mat-cell *matCellDef="let element"> {{element.Cupon_Interes}} </td>
             </ng-container>
       
@@ -62,7 +62,7 @@
 
         </div>
 
-        <button mat-raised-button class= "botones" color="primary" type="button" routerLink = "/admin/bonos/nuevo">
+        <button mat-raised-button class= "botones" (click)="resultados()" color="primary" type="button">
             <span> Resultados del Bono </span>
             <mat-icon>arrow_forward_ios</mat-icon>
         </button>

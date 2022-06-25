@@ -27,7 +27,7 @@ export class CalcularBonoComponent implements OnInit {
       //this.getBonoById(this.bonoId)
       //this.getPeriodoCuponById(this.bonoActual.Periodo_Cupon_id)
       //this.AMERICANO(this.bonoActual.VN, this.bonoActual.VC, this.periodoCupon.dias, this.bonoActual.Anios, this.bonoActual.P_Tasa_Interes, this.bonoActual.P_Tasa_Anual_Descuento, this.bonoActual.P_Impuesto)
-      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30)
+      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [0.01, 0.02, 0.03])
     });
   }
 
@@ -101,12 +101,32 @@ export class CalcularBonoComponent implements OnInit {
     return res;
   }
 
-  AMERICANO(vn: any, vc: any, frec: any, anios: any, ti: any, td: any, ir: any){
+  AMERICANO(vn: any, vc: any, frec: any, anios: any, ti: any, td: any, ir: any, inflaciones: any){
     let per = 360/frec;
     let p = Math.floor(per*anios);
 
     let ntasa = this.convertasa(frec, ti);
     let cok = this.convertasa(frec, td);
+
+    let Bono = [];
+    let BonoIndexado = [];
+    let InflacionesPeriodo = [];
+
+    for(let i = 0; i < inflaciones; i++){
+      let inflacion_en_el_periodo = Math.pow(1+(inflaciones[i]/100.0), frec/360) - 1;
+      for(let j = 0; i < per; j++){
+        InflacionesPeriodo.push(inflacion_en_el_periodo);
+      }
+    }
+
+    Bono.push(vn);
+
+    for(let i = 0; i < p; i++){
+      BonoIndexado.push(Bono[i]*(1+InflacionesPeriodo[i]));
+      if(i != 0){
+        Bono.push((BonoIndexado[i-1]));
+      }
+    }
 
     let fbon = [];
     fbon.push(vc*-1);
@@ -163,6 +183,8 @@ export class CalcularBonoComponent implements OnInit {
       facp.push(temp3);
     }
 
+    //Quitar
+
     for(let i = 0; i < fbon.length; i++){
       
       if(i == 0){
@@ -190,5 +212,9 @@ export class CalcularBonoComponent implements OnInit {
 
       this.dataSource.push(this.objetoTabla);
     }
+  }
+
+  resultados(){
+    this.router.navigate([`/admin/bonos/resultados/${this.bonoId}`]);
   }
 }

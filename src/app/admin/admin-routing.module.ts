@@ -24,7 +24,7 @@ const routes: Routes = [{
       component:CalcularBonoComponent,
     },
     {
-      path:'bonos/resultados',
+      path:'bonos/resultados/:id',
       component: ResultsBonoComponent,
     },
     {

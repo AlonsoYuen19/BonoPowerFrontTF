@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { NewInflacionComponent } from '../new-inflacion/new-inflacion.component';
 import { InflacionReq } from '../shared/bono.model';
@@ -98,7 +99,7 @@ export class NewBonoComponent implements OnInit {
   dataSource = this.inflaciones;
 
 
-  constructor(private bonoService:BonoService, private router:Router, public dialog: MatDialog) { }
+  constructor(private bonoService:BonoService, private router:Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -147,12 +148,30 @@ export class NewBonoComponent implements OnInit {
       data: {Anio: null, Inflacion: null},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       console.log('The dialog was closed');
       if(result != undefined){
-        this.dataSource.push(result);
-        this.dataSource= [...this.dataSource];
+        let verificar = false;
+        for(let i = 0; i < this.dataSource.length; i++){
+          if(result.Anio == this.dataSource[i].Anio){
+            verificar = true;
+          }
+        }
+
+        if(verificar == false){
+          this.dataSource.push(result);
+          this.dataSource= [...this.dataSource];
+        }
+        else{
+          this.openSnackBar("YA EXISTE UNA INFLACION PARA ESTE AÑO", "ERROR")
+        }
       }
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2 * 1000,
     });
   }
 
@@ -163,6 +182,15 @@ export class NewBonoComponent implements OnInit {
 
   verif(){
     if(this.dataSource.length > 0){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  verif2(){
+    if(this.dataSource.length != 6){
       return false;
     }
     else{
