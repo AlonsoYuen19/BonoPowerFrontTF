@@ -23,7 +23,7 @@ export class NewBonoComponent implements OnInit {
     Anios: 0,
     Periodo_Cupon_id: 1,
     Plazo_Gracia: 0,
-    DXA: 0,
+    DXA: 360,
     Tipo_Tasa: "Efectiva",
     Periodo_Capitalizacion_id: 2,
     P_Tasa_Interes: 0,
@@ -35,6 +35,7 @@ export class NewBonoComponent implements OnInit {
     P_Colocacion: 0,
     P_Flotacion: 0,
     P_Cavali: 0,
+    Tipo_Moneda: "$"
   }
 
   frecuencias = [
@@ -72,24 +73,24 @@ export class NewBonoComponent implements OnInit {
 
   inflaciones: InflacionReq[] = [
     {
-      Anio: 1,
-      Inflacion: 0.01
+      anio: 1,
+      inflacion: 0.01
     },
     {
-      Anio: 2,
-      Inflacion: 0.02
+      anio: 2,
+      inflacion: 0.02
     },
     {
-      Anio: 3,
-      Inflacion: 0.03
+      anio: 3,
+      inflacion: 0.03
     },
     {
-      Anio: 4,
-      Inflacion: 0.04
+      anio: 4,
+      inflacion: 0.04
     },
     {
-      Anio: 5,
-      Inflacion: 0.05
+      anio: 5,
+      inflacion: 0.05
     }
   ]
 
@@ -107,29 +108,30 @@ export class NewBonoComponent implements OnInit {
   crearBono(){
 
     const bonoreq = {
-      Nombre: this.bono.Nombre,
-      Importancia: this.bono.Importancia,
-      VN: this.bono.VN,
-      VC: this.bono.VC,
-      Anios: this.bono.Anios,
-      Periodo_Cupon_id: this.bono.Periodo_Cupon_id,
-      Plazo_Gracia: this.bono.Plazo_Gracia,
-      DXA: this.bono.DXA,
-      Tipo_Tasa: this.bono.Tipo_Tasa,
-      Periodo_Capitalizacion_id: this.bono.Periodo_Capitalizacion_id,
-      P_Tasa_Interes: this.bono.P_Tasa_Interes,
-      P_Tasa_Anual_Descuento: this.bono.P_Tasa_Anual_Descuento,
-      P_Impuesto: this.bono.P_Impuesto,
-      Emision: new Date(this.bono.Emision),
-      P_Prima: this.bono.P_Prima,
-      P_Estructuracion: this.bono.P_Estructuracion,
-      P_Colocacion: this.bono.P_Colocacion,
-      P_Flotacion: this.bono.P_Flotacion,
-      P_Cavali: this.bono.P_Cavali,
+      nombre: this.bono.Nombre,
+      importancia: this.bono.Importancia,
+      vn: this.bono.VN,
+      vc: this.bono.VC,
+      anios: this.bono.Anios,
+      periodo_cupon_id: this.bono.Periodo_Cupon_id,
+      plazo_gracia: this.bono.Plazo_Gracia,
+      dxa: this.bono.DXA,
+      tipo_tasa: this.bono.Tipo_Tasa,
+      periodo_capitalizacion_id: this.bono.Periodo_Capitalizacion_id,
+      p_tasa_interes: this.bono.P_Tasa_Interes,
+      p_tasa_anual_descuento: this.bono.P_Tasa_Anual_Descuento,
+      p_impuesto: this.bono.P_Impuesto,
+      emision: new Date(this.bono.Emision),
+      p_prima: this.bono.P_Prima,
+      p_estructuracion: this.bono.P_Estructuracion,
+      p_colocacion: this.bono.P_Colocacion,
+      p_flotacion: this.bono.P_Flotacion,
+      p_cavali: this.bono.P_Cavali,
+      tipo_moneda: this.bono.Tipo_Moneda
     }
 
     const EmisionDate = String(this.bono.Emision).split("-").map(Number);
-    bonoreq.Emision.setFullYear(EmisionDate[0], EmisionDate[1], EmisionDate[2]);
+    bonoreq.emision.setFullYear(EmisionDate[0], EmisionDate[1], EmisionDate[2]);
 
     this.bonoService.createBono(bonoreq)
       .subscribe((x:any)=>{
@@ -153,7 +155,7 @@ export class NewBonoComponent implements OnInit {
       if(result != undefined){
         let verificar = false;
         for(let i = 0; i < this.dataSource.length; i++){
-          if(result.Anio == this.dataSource[i].Anio){
+          if(result.anio == this.dataSource[i].anio){
             verificar = true;
           }
         }

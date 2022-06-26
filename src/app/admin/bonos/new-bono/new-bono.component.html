@@ -324,17 +324,28 @@
           </div>
 
           <div class="d-flex justify-content-center">
+            <mat-form-field appearance="outline" class="linea">
+              <mat-label>Tipo de moneda</mat-label>
+              <mat-select name="Tipo_moneda" [(ngModel)]="bono.Tipo_Moneda" #Tipo_moneda="ngModel" required>
+                <mat-option value="$">$</mat-option>
+                <mat-option value="S/">S/</mat-option>
+                <mat-option value="€">€</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="d-flex justify-content-center">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 linea">
               <!-- Año Column -->
               <ng-container matColumnDef="Año">
                 <th mat-header-cell *matHeaderCellDef> Año </th>
-                <td mat-cell *matCellDef="let element"> {{element.Anio}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.anio}} </td>
               </ng-container>
 
               <!-- Inflación Column -->
               <ng-container matColumnDef="Inflación">
                 <th mat-header-cell *matHeaderCellDef> Inflación </th>
-                <td mat-cell *matCellDef="let element"> {{element.Inflacion}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.inflacion}} </td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -18,7 +18,7 @@ export class CalcularBonoComponent implements OnInit {
   
   objetoTabla: ObjetoTabla | undefined;
 
-  displayedColumns: string[] = ['Indice', 'Cupon_Interes', 'Flujo_Escudo', 'Flujo_Bonista', 'Flujo_Actual', 'FlujoXPlazo', 'Factor_Convexividad'];
+  displayedColumns: string[] = ['Indice', 'Inflacion_Periodo' ,'Bono', 'Bono_Indexado','Cupon_Interes', 'Flujo_Escudo', 'Flujo_Bonista', 'Flujo_Actual', 'FlujoXPlazo', 'Factor_Convexividad'];
   dataSource: ObjetoTabla[] = [];
 
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class CalcularBonoComponent implements OnInit {
       //this.getBonoById(this.bonoId)
       //this.getPeriodoCuponById(this.bonoActual.Periodo_Cupon_id)
       //this.AMERICANO(this.bonoActual.VN, this.bonoActual.VC, this.periodoCupon.dias, this.bonoActual.Anios, this.bonoActual.P_Tasa_Interes, this.bonoActual.P_Tasa_Anual_Descuento, this.bonoActual.P_Impuesto)
-      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [0.01, 0.02, 0.03])
+      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [2.8, 2.5, 2.3])
     });
   }
 
@@ -112,26 +112,46 @@ export class CalcularBonoComponent implements OnInit {
     let BonoIndexado = [];
     let InflacionesPeriodo = [];
 
-    for(let i = 0; i < inflaciones; i++){
-      let inflacion_en_el_periodo = Math.pow(1+(inflaciones[i]/100.0), frec/360) - 1;
-      for(let j = 0; i < per; j++){
+    let InflacionesAnios = [];
+    for(let i = 0; i < anios; i++){
+      InflacionesAnios.push(0);
+    }
+
+    InflacionesAnios[0] = inflaciones[0];
+    InflacionesAnios[1] = inflaciones[1];
+    InflacionesAnios[2] = inflaciones[2];
+
+    for(let i = 0; i < InflacionesAnios.length; i++){
+      let inflacion_en_el_periodo = 0;
+
+      if(InflacionesAnios[i] != 0){
+        inflacion_en_el_periodo = Math.pow(1+(InflacionesAnios[i]/100.0), frec/360) - 1;
+      }
+      
+      for(let j = 0; j < per; j++){
         InflacionesPeriodo.push(inflacion_en_el_periodo);
       }
     }
 
     Bono.push(vn);
+    BonoIndexado.push(Bono[0]*(1+InflacionesPeriodo[0]));
 
     for(let i = 0; i < p; i++){
-      BonoIndexado.push(Bono[i]*(1+InflacionesPeriodo[i]));
       if(i != 0){
-        Bono.push((BonoIndexado[i-1]));
+        Bono.push(BonoIndexado[i-1]);
+        BonoIndexado.push(Bono[i]*(1+InflacionesPeriodo[i]));
       }
     }
 
     let fbon = [];
     fbon.push(vc*-1);
 
-    let escudo = (vn*ntasa*ir)
+    let escudo = []
+
+    for(let i = 0; i < p; i++){
+      escudo.push(BonoIndexado[i]*ntasa*ir)
+    }
+
     let fact = [];
     let ci = [];
     let flujoescudo = [];
@@ -141,7 +161,7 @@ export class CalcularBonoComponent implements OnInit {
     for(let i = 1; i < p+1; i++){
 
       if(i < p){
-        let temp = vn*ntasa;
+        let temp = BonoIndexado[i-1]*ntasa;
         temp2 = temp/Math.pow(1+cok, i);
 
         fbon.push(temp);
@@ -150,11 +170,11 @@ export class CalcularBonoComponent implements OnInit {
       }
 
       if(i == p){
-        let temp = vn*ntasa;
-        ci.push(vn + temp);
-        fbon.push(vn + temp);
+        let temp = BonoIndexado[i-1]*ntasa;
+        ci.push(temp);
+        fbon.push(BonoIndexado[i-1] + temp);
 
-        temp2 = (temp + vn)/Math.pow(1+cok, i);
+        temp2 = (temp + BonoIndexado[i-1])/Math.pow(1+cok, i);
         fact.push(temp2);
       }
     }
@@ -165,7 +185,7 @@ export class CalcularBonoComponent implements OnInit {
         flujoescudo.push(fbon[i]);
       }
       else{
-        flujoescudo.push(fbon[i] - escudo);
+        flujoescudo.push(fbon[i] - escudo[i-1]);
       }
     }
 
@@ -182,31 +202,35 @@ export class CalcularBonoComponent implements OnInit {
       let temp3 = fact[i] * (i+1) * (i+2);
       facp.push(temp3);
     }
-
-    //Quitar
-
+    
     for(let i = 0; i < fbon.length; i++){
       
       if(i == 0){
         this.objetoTabla = ({
           Indice: i,
-          Cupon_Interes: 0,
-          Flujo_Escudo: flujoescudo[i],
-          Flujo_Bonista: fbon[i],
-          Flujo_Actual: 0,
-          FlujoXPlazo: 0,
-          Factor_Convexividad: 0
+          Inflacion_Periodo: "0%",
+          Bono: "0",
+          Bono_Indexado: "0",
+          Cupon_Interes: "0",
+          Flujo_Escudo: flujoescudo[i].toFixed(2),
+          Flujo_Bonista: fbon[i].toFixed(2),
+          Flujo_Actual: "0",
+          FlujoXPlazo: "0",
+          Factor_Convexividad: "0"
         });
       }
       else{
         this.objetoTabla = ({
           Indice: i,
-          Cupon_Interes: ci[i-1],
-          Flujo_Escudo: flujoescudo[i],
-          Flujo_Bonista: fbon[i],
-          Flujo_Actual: fact[i-1],
-          FlujoXPlazo: fap[i-1],
-          Factor_Convexividad: facp[i-1]
+          Inflacion_Periodo: (InflacionesPeriodo[i-1]*100).toFixed(3) + "%",
+          Bono: Bono[i-1].toFixed(2),
+          Bono_Indexado: BonoIndexado[i-1].toFixed(2),
+          Cupon_Interes: ci[i-1].toFixed(2),
+          Flujo_Escudo: flujoescudo[i].toFixed(2),
+          Flujo_Bonista: fbon[i].toFixed(2),
+          Flujo_Actual: fact[i-1].toFixed(2),
+          FlujoXPlazo: fap[i-1].toFixed(2),
+          Factor_Convexividad: facp[i-1].toFixed(2)
         });
       }
 

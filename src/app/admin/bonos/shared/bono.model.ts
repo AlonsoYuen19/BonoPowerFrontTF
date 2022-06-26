@@ -10,69 +10,74 @@ export interface PeriodoReq {
 }
 
 export interface Bono {
-    Id: number;
-    Nombre: string;
-    Fecha: Date;
-    Importancia: number;
-    VN: number;
-    VC: number;
-    Anios: number;
-    Periodo_Cupon_id: number;
-    Plazo_Gracia: number;
-    DXA: number;
-    Tipo_Tasa: string;
-    Periodo_Capitalizacion_id: number;
-    P_Tasa_Interes: number;
-    P_Tasa_Anual_Descuento: number;
-    P_Impuesto: number;
-    Emision: Date;
-    P_Prima: number;
-    P_Estructuracion: number;
-    P_Colocacion: number;
-    P_Flotacion: number;
-    P_Cavali: number;
+    id: number;
+    nombre: string;
+    fecha: Date;
+    importancia: number;
+    vn: number;
+    vc: number;
+    anios: number;
+    periodo_cupon_id: number;
+    plazo_gracia: number;
+    dxa: number;
+    tipo_tasa: string;
+    periodo_capitalizacion_id: number;
+    p_tasa_interes: number;
+    p_tasa_anual_descuento: number;
+    p_impuesto: number;
+    emision: Date;
+    p_prima: number;
+    p_estructuracion: number;
+    p_colocacion: number;
+    p_flotacion: number;
+    p_cavali: number;
+    tipo_moneda: string;
 }
 
 export interface BonoReq {
-    Nombre: string;
-    Importancia: number;
-    VN: number;
-    VC: number;
-    Anios: number;
-    Periodo_Cupon_id: number;
-    Plazo_Gracia: number;
-    DXA: number;
-    Tipo_Tasa: string;
-    Periodo_Capitalizacion_id: number;
-    P_Tasa_Interes: number;
-    P_Tasa_Anual_Descuento: number;
-    P_Impuesto: number;
-    Emision: Date;
-    P_Prima: number;
-    P_Estructuracion: number;
-    P_Colocacion: number;
-    P_Flotacion: number;
-    P_Cavali: number;
+    nombre: string;
+    importancia: number;
+    vn: number;
+    vc: number;
+    anios: number;
+    periodo_cupon_id: number;
+    plazo_gracia: number;
+    dxa: number;
+    tipo_tasa: string;
+    periodo_capitalizacion_id: number;
+    p_tasa_interes: number;
+    p_tasa_anual_descuento: number;
+    p_impuesto: number;
+    emision: Date;
+    p_prima: number;
+    p_estructuracion: number;
+    p_colocacion: number;
+    p_flotacion: number;
+    p_cavali: number;
+    tipo_moneda: string;
 }
 
 export interface Inflacion {	
     id: number;
-    Bono_id: number;
-    Anio: number;
-    Inflacion: number;
+    bono_id: number;
+    anio: number;
+    inflacion: number;
 }
 
 export interface InflacionReq {
-    Anio: number;
-    Inflacion: number;
+    anio: number;
+    inflacion: number;
 }
 
 export interface ObjetoTabla {
     Indice: number;
-    Cupon_Interes: number;
-    Flujo_Escudo: number;
-    Flujo_Bonista: number;
-    Flujo_Actual: number;
-    FlujoXPlazo: number;
-    Factor_Convexividad: number;
+    Inflacion_Periodo: string,
+    Bono: string,
+    Bono_Indexado: string,
+    Cupon_Interes: string;
+    Flujo_Escudo: string;
+    Flujo_Bonista: string;
+    Flujo_Actual: string;
+    FlujoXPlazo: string;
+    Factor_Convexividad: string;
 }
