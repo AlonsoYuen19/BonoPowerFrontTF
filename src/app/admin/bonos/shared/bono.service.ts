@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Bono, BonoReq, Periodo } from './bono.model';
+import { Bono, BonoReq, InflacionReq, Periodo } from './bono.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,23 +12,35 @@ export class BonoService {
 
   constructor(private http:HttpClient) { }
 
-  getAll(){
-    return this.http.get<Bono[]>(`${this.apiBase}/bonos/listar`)
+  getAll(id: number){
+    return this.http.get<Bono[]>(`${this.apiBase}/bono/userId/${id}`)
   }
 
   createBono(bonoReq:BonoReq){
-    return this.http.post(`${this.apiBase}/bonos/agregar`, bonoReq)
+    return this.http.post(`${this.apiBase}/bono`, bonoReq)
   }
 
   getBonoById(id: number){
-    return this.http.get<Bono>(`${this.apiBase}/bonos/${id}`)
+    return this.http.get<Bono>(`${this.apiBase}/bono/${id}`)
   }
 
   getPeriodoCuponById(id: number){
-    return this.http.get<Periodo>(`${this.apiBase}/periodos/${id}`)
+    return this.http.get<Periodo>(`${this.apiBase}/period/${id}`)
   }
 
   deleteBono(id: number){
-    return this.http.delete(`${this.apiBase}/bonos/${id}`)
+    return this.http.delete(`${this.apiBase}/bono/${id}`)
+  }
+
+  createInflation(bonoReq:InflacionReq){
+    return this.http.post(`${this.apiBase}/inflation`, bonoReq)
+  }
+
+  getAllPeriodos(){
+    return this.http.get<Periodo[]>(`${this.apiBase}/period`)
+  }
+
+  getInflaciones(id: number){
+    return this.http.get<Periodo[]>(`${this.apiBase}/inflation/bonoId/${id}`)
   }
 }

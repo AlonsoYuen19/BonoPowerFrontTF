@@ -18,7 +18,6 @@ export interface Bono {
     vc: number;
     anios: number;
     periodo_cupon_id: number;
-    plazo_gracia: number;
     dxa: number;
     tipo_tasa: string;
     periodo_capitalizacion_id: number;
@@ -41,7 +40,6 @@ export interface BonoReq {
     vc: number;
     anios: number;
     periodo_cupon_id: number;
-    plazo_gracia: number;
     dxa: number;
     tipo_tasa: string;
     periodo_capitalizacion_id: number;

@@ -14,10 +14,10 @@ export class AuthService {
   constructor(private http:HttpClient) { }
 
   logIn(login_:Login){
-    return this.http.post(`${this.apiBase}/login`, login_);
+    return this.http.post(`${this.apiBase}/user`, login_);
   }
 
   signUp(signup_:Signup){
-    return this.http.post(`${this.apiBase}/signup`, signup_);
+    return this.http.post(`${this.apiBase}/user`, signup_);
   }
 }

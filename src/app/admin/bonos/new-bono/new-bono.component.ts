@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { NewInflacionComponent } from '../new-inflacion/new-inflacion.component';
-import { InflacionReq } from '../shared/bono.model';
+import { InflacionReq, Periodo} from '../shared/bono.model';
 import { BonoService } from '../shared/bono.service';
 
 @Component({
@@ -22,7 +22,6 @@ export class NewBonoComponent implements OnInit {
     VC: 0,
     Anios: 0,
     Periodo_Cupon_id: 1,
-    Plazo_Gracia: 0,
     DXA: 360,
     Tipo_Tasa: "Efectiva",
     Periodo_Capitalizacion_id: 2,
@@ -38,71 +37,18 @@ export class NewBonoComponent implements OnInit {
     Tipo_Moneda: "$"
   }
 
-  frecuencias = [
-    {
-      id: 1,
-      nombre: "Mensual",
-      dias: 30
-    },
-    {
-      id: 2,
-      nombre: "Bimestral",
-      dias: 60
-    },
-    {
-      id: 3,
-      nombre: "Trimestral",
-      dias: 90
-    },
-    {
-      id: 4,
-      nombre: "Cuatrimestral",
-      dias: 120
-    },
-    {
-      id: 5,
-      nombre: "Semestral",
-      dias: 180
-    },
-    {
-      id: 6,
-      nombre: "Anual",
-      dias: 360
-    }
-  ]
+  frecuencias! : Periodo[];
 
-  inflaciones: InflacionReq[] = [
-    {
-      anio: 1,
-      inflacion: 0.01
-    },
-    {
-      anio: 2,
-      inflacion: 0.02
-    },
-    {
-      anio: 3,
-      inflacion: 0.03
-    },
-    {
-      anio: 4,
-      inflacion: 0.04
-    },
-    {
-      anio: 5,
-      inflacion: 0.05
-    }
-  ]
-
-  inflacion: any
+  inflacion: any;
 
   displayedColumns: string[] = ['Año', 'Inflación'];
-  dataSource = this.inflaciones;
+  dataSource : any = [];
 
 
   constructor(private bonoService:BonoService, private router:Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.getAllPeriodos();
   }
 
   crearBono(){
@@ -114,7 +60,6 @@ export class NewBonoComponent implements OnInit {
       vc: this.bono.VC,
       anios: this.bono.Anios,
       periodo_cupon_id: this.bono.Periodo_Cupon_id,
-      plazo_gracia: this.bono.Plazo_Gracia,
       dxa: this.bono.DXA,
       tipo_tasa: this.bono.Tipo_Tasa,
       periodo_capitalizacion_id: this.bono.Periodo_Capitalizacion_id,
@@ -129,13 +74,32 @@ export class NewBonoComponent implements OnInit {
       p_cavali: this.bono.P_Cavali,
       tipo_moneda: this.bono.Tipo_Moneda
     }
-
     const EmisionDate = String(this.bono.Emision).split("-").map(Number);
     bonoreq.emision.setFullYear(EmisionDate[0], EmisionDate[1], EmisionDate[2]);
+    
+    console.log(bonoreq);
 
     this.bonoService.createBono(bonoreq)
       .subscribe((x:any)=>{
         console.log(x);
+
+        if(this.dataSource != null){
+          for(let i = 0; i < this.dataSource.length; i++){
+            this.inflacion = ({
+              bonoId: x.id,
+              anio: this.dataSource[i].anio,
+              inflacion: this.dataSource[i].inflacion,
+            });
+
+            this.bonoService.createInflation(this.inflacion)
+            .subscribe((x:any)=>{
+            console.log(x);
+            }, (error)=>{
+            this.invalid = true;
+            });
+          }
+        }
+
         let currentUrl = this.router.url;
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.navigate([`/admin/bonos/calcular/${x.id}`]);
@@ -154,9 +118,11 @@ export class NewBonoComponent implements OnInit {
       console.log('The dialog was closed');
       if(result != undefined){
         let verificar = false;
-        for(let i = 0; i < this.dataSource.length; i++){
-          if(result.anio == this.dataSource[i].anio){
-            verificar = true;
+        if(this.dataSource != null){
+          for(let i = 0; i < this.dataSource.length; i++){
+            if(result.anio == this.dataSource[i].anio){
+              verificar = true;
+            }
           }
         }
 
@@ -183,21 +149,42 @@ export class NewBonoComponent implements OnInit {
   }
 
   verif(){
-    if(this.dataSource.length > 0){
-      return false;
+    if(this.dataSource != null){
+      if(this.dataSource.length > 0){
+        return false;
+      }
+      else{
+        return true;
+      }
     }
     else{
-      return true;
+      return false;
     }
   }
 
   verif2(){
-    if(this.dataSource.length != 6){
-      return false;
+    if(this.dataSource != null){
+      if(this.dataSource.length != this.bono.Anios){
+        return false;
+      }
+      else{
+        return true;
+      }
     }
     else{
-      return true;
+      return false
     }
+    
+  }
+
+  getAllPeriodos(){
+    this.bonoService.getAllPeriodos().
+    subscribe((x:any)=>{
+      console.log(x);
+      this.frecuencias = x;
+    }, (error)=>{
+    this.invalid = true;
+    });
   }
 
 }

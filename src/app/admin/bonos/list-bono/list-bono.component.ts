@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BonoService } from '../shared/bono.service';
 
 @Component({
   selector: 'app-list-bono',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListBonoComponent implements OnInit {
 
-  constructor() { }
+  userId!: any;
+  constructor(private bonoService:BonoService, private router:Router, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe( params =>{
+      this.userId = params['id']
+    });
+  }
+
+  getBonosUser(){
+
   }
 
 }

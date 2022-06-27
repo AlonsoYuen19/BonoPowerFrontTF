@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { flatMap } from 'rxjs';
 import { Bono, Periodo } from '../../shared/bono.model';
 import { BonoService } from '../../shared/bono.service';
 
@@ -16,6 +15,8 @@ export class ResultsBonoComponent implements OnInit {
   periodoCupon!: Periodo;
   periodoCapitalizacion: Periodo={id:1, nombre:"Semestral", dias:40};
   
+
+  inflaciones: any = [];
 
   frecuencia!:string;
   n_periodos_anio!:string;
@@ -47,26 +48,32 @@ export class ResultsBonoComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe( params =>{
       this.bonoId = params['id']
-      //this.getBonoById(this.bonoId)
-      //this.getPeriodoCuponById(this.bonoActual.periodo_cupon_id,1)
-      //this.getPeriodoCuponById(this.bonoActual.periodo_capitalizacion_id,0)
+      this.getInflaciones(this.bonoId)
+      this.getBonoById(this.bonoId)
       //this.AMERICANO(this.bonoActual.VN, this.bonoActual.VC, this.periodoCupon.dias, this.bonoActual.Anios, this.bonoActual.P_Tasa_Interes, this.bonoActual.P_Tasa_Anual_Descuento, this.bonoActual.P_Impuesto)
-      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [2.8, 2.5, 2.3], 2, 2, 2, 2, 2)
+      //this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [2.8, 2.5, 2.3], 2, 2, 2, 2, 2)
     });
   }
 
   getBonoById(id: number){
     this.bonoService.getBonoById(id).subscribe((data)=>{
       this.bonoActual = data
+
+      this.getPeriodoCuponById(this.bonoActual.periodo_cupon_id,1)
+      this.getPeriodoCuponById(this.bonoActual.periodo_capitalizacion_id,0)
     });
   }
 
-  getPeriodoCuponById(id: number,p:number){
+  getPeriodoCuponById(id: number, p:number){
     this.bonoService.getPeriodoCuponById(id).subscribe((data)=>{
       if(p==1){
         this.periodoCupon = data
       }else{
         this.periodoCapitalizacion = data
+      }
+
+      if(this.periodoCupon != null && this.periodoCapitalizacion != null){
+        this.AMERICANO(this.bonoActual.vn, this.bonoActual.vc, this.periodoCupon.dias, this.bonoActual.anios, this.bonoActual.p_tasa_interes, this.bonoActual.p_tasa_anual_descuento, this.bonoActual.p_impuesto, this.inflaciones, this.bonoActual.p_prima, this.bonoActual.p_estructuracion, this.bonoActual.p_colocacion, this.bonoActual.p_flotacion, this.bonoActual.p_cavali)
       }
     });
   }
@@ -331,6 +338,19 @@ export class ResultsBonoComponent implements OnInit {
     let trea_365 = 100*(Math.pow((irr+1),per3)-1);
     this.trea=(trea).toFixed(5).concat("%");
     this.trea_365=(trea_365).toFixed(5).concat("%");
+
+    console.log(trea_365)
+  }
+
+  async getInflaciones(id: number){
+    await this.bonoService.getInflaciones(id)
+    .subscribe((data: any)=>{
+      if(data != null){
+        for(let i = 0; i < data.length; i++){
+          this.inflaciones.push(data[i].inflacion)
+        }
+      }
+    });
   }
 
 }

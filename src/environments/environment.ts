@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBase: 'https://localhost:8082/api/v1',
+  apiBase: 'https://bonopower.herokuapp.com',
   RETRIES: 2
 };
 

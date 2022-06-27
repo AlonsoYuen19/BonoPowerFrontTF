@@ -12,7 +12,7 @@ const routes: Routes = [{
   component:LayoutComponent,
   children:[
     {
-      path:'bonos',
+      path:'bonos/:id',
       component:ListBonoComponent,
     },
     {
