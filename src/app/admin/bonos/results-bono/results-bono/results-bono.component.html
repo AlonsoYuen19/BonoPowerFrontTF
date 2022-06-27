@@ -12,47 +12,47 @@
                 <div class="d-flex justify-content-around" style="background-color: white; padding: 10px;margin: 20px;">
                     <label>Frecuencia del cupón</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{frecuencia}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Días capitalización</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{periodoCapitalizacion.nombre}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Nº Períodos por Año</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{n_periodos_anio}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Nº Total de Periodos</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{total_periodos}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Tasa efectiva anual</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{tasaEA}}</label>
+                </div>
+                <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
+                    <label>Tasa efectiva periodo</label>
+                    <mat-icon matSuffix>arrow_forward</mat-icon>
+                    <label>{{tasaEP}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Cok Periodo</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{cok}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Costes Iniciales Emisor</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{costes_iniciales_emisor}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Costes Iniciales Bonista</label>
                     <mat-icon matSuffix >arrow_forward</mat-icon>
-                    <label>0</label>
-                </div>
-                <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
-                    <label>Frecuencia del cupón</label>
-                    <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{costes_iniciales_bonista}}</label>
                 </div>
             </div>
             
@@ -65,17 +65,17 @@
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Convexidad</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{ratioconv}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Total</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{total}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Duración modificada</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{duracion_mod}}</label>
                 </div>
             </div>
         </div>
@@ -94,12 +94,12 @@
                 <div class="d-flex justify-content-around" style="background-color: white; padding: 10px;margin: 20px;">
                     <label>Precio Actual</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{valor_actual}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>Utilidad / Pérdida</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>0</label>
+                    <label>{{utilidad_p}}</label>
                 </div>
             </div>
             
@@ -108,24 +108,24 @@
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px; display: flex;">
                     <label>TCEA Emisor</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>511651560</label>
+                    <label>{{tcea}}</label>
                     <label >|</label>
-                    <label>51561560</label>
+                    <label>{{tcea_365}}</label>
                 </div>       
 
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>TCEA Emisor c/Escudo</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>511651560</label>
+                    <label>{{tcea2}}</label>
                     <label >|</label>
-                    <label>51561560</label>
+                    <label>{{tcea_2_365}}</label>
                 </div>
                 <div class="d-flex justify-content-around" style="background-color: white;padding: 10px;margin: 20px;">
                     <label>TREA Bonista</label>
                     <mat-icon matSuffix>arrow_forward</mat-icon>
-                    <label>511651560</label>
+                    <label>{{trea}}</label>
                     <label >|</label>
-                    <label>51561560</label>
+                    <label>{{trea_365}}</label>
                 </div>
             </div>
         </div>

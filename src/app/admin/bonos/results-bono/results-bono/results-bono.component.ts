@@ -14,18 +14,44 @@ export class ResultsBonoComponent implements OnInit {
   bonoId:any;
   bonoActual!: Bono;
   periodoCupon!: Periodo;
+  periodoCapitalizacion: Periodo={id:1, nombre:"Semestral", dias:40};
+  
 
+  frecuencia!:string;
+  n_periodos_anio!:string;
+  total_periodos!:string;
+  tasaEA!:any;
+  tasaEP!:any;
+  cok!:any;
+  costes_iniciales_emisor!:any;
+  costes_iniciales_bonista!:any;
+
+
+  valor_actual!:any;
+  utilidad_p: any;
+  ratioconv!:any;
+  total!:any;
   duracion!: string;
+  duracion_mod!:any;
+  inflaciones_en_el_periodo!:string;
 
+  trea!:string;
+  trea_365!:any;
+  tcea!:any;
+  tcea_365!:any;
+
+  tcea2!:any;
+  tcea_2_365!:any;
   constructor(private bonoService:BonoService, private router:Router, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe( params =>{
       this.bonoId = params['id']
       //this.getBonoById(this.bonoId)
-      //this.getPeriodoCuponById(this.bonoActual.Periodo_Cupon_id)
+      //this.getPeriodoCuponById(this.bonoActual.periodo_cupon_id,1)
+      //this.getPeriodoCuponById(this.bonoActual.periodo_capitalizacion_id,0)
       //this.AMERICANO(this.bonoActual.VN, this.bonoActual.VC, this.periodoCupon.dias, this.bonoActual.Anios, this.bonoActual.P_Tasa_Interes, this.bonoActual.P_Tasa_Anual_Descuento, this.bonoActual.P_Impuesto)
-      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [2.8, 2.5, 2.3])
+      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [2.8, 2.5, 2.3], 2, 2, 2, 2, 2)
     });
   }
 
@@ -35,9 +61,13 @@ export class ResultsBonoComponent implements OnInit {
     });
   }
 
-  getPeriodoCuponById(id: number){
+  getPeriodoCuponById(id: number,p:number){
     this.bonoService.getPeriodoCuponById(id).subscribe((data)=>{
-      this.periodoCupon = data
+      if(p==1){
+        this.periodoCupon = data
+      }else{
+        this.periodoCapitalizacion = data
+      }
     });
   }
 
@@ -52,14 +82,14 @@ export class ResultsBonoComponent implements OnInit {
 
       NPV = 0;
       for(let i = 0; i < arr.length; i++){
-        NPV += arr[i].valor/Math.pow(1+g, i);
+        NPV += arr[i]/Math.pow(1+g, i);
       }
 
       if(NPV > 0){
         min = g;
       }
       else{
-        max = g;
+        max = g;  
       }
     }
     return g;
@@ -69,13 +99,35 @@ export class ResultsBonoComponent implements OnInit {
     return (Math.pow(1+tasa, frec/360) - 1);
   }
 
+  factorconvx(arr: any){
+    let temp = []
+    let temp2 = 0
+    for(let i = 0;i<arr.length;i++){
+      temp2 = arr[i]*(i+1)*(i+2);
+      temp.push(temp2);
+    }
+    return temp;
+  }
+
+  fxp(arr:any){
+    let temp = [];
+    let temp2 = 0;
+    let per = 180/360;
+
+    for(let i = 0; i < arr.length; i++){
+      temp2 += arr[i]*(i+1)*per;
+      temp.push(temp2);
+    }
+
+    return temp;
+  }
+
   npv(arr: any, t: any){
     let temp = 0;
 
     for(let i = 0; i < arr.length; i++){
-      temp += arr[i].valor/Math.pow(1+t, i+1);
+      temp += arr[i]/Math.pow(1+t, i+1);
     }
-
     return temp;
   }
 
@@ -99,13 +151,20 @@ export class ResultsBonoComponent implements OnInit {
     return res;
   }
 
-  AMERICANO(vn: any, vc: any, frec: any, anios: any, ti: any, td: any, ir: any, inflaciones: any){
+  AMERICANO(vn: any, vc: any, frec: any, anios: any, ti: any, td: any, ir: any, inflaciones: any, p_prima: any, p_estructuracion:any, p_colocacion:any, p_flotacion: any, p_cavali: any){
     let per = 360/frec;
+    let per3 = 365/frec;
     let p = Math.floor(per*anios);
 
     let ntasa = this.convertasa(frec, ti);
     let cok = this.convertasa(frec, td);
 
+    this.frecuencia = frec;
+    this.n_periodos_anio = per.toString();
+    this.total_periodos = p.toString();
+    this.tasaEA = (ti*100).toFixed(1).concat("%");
+    this.tasaEP = (ntasa*100).toString().concat("%");
+    this.cok = (cok*100).toString().concat("%");
     let Bono = [];
     let BonoIndexado = [];
     let InflacionesPeriodo = [];
@@ -142,7 +201,20 @@ export class ResultsBonoComponent implements OnInit {
     }
 
     let fbon = [];
-    fbon.push(vc*-1);
+    let flujoemisor = []
+
+    let sum_cie = p_estructuracion + p_cavali + p_colocacion + p_flotacion
+    let costes_iniciales_emisor = 0
+    if(sum_cie != 0)
+      costes_iniciales_emisor = (sum_cie/100)*vc
+    this.costes_iniciales_emisor = costes_iniciales_emisor;
+    let sum_cib = p_cavali + p_flotacion
+    let costes_iniciales_bonista = 0
+    if(sum_cib != 0)
+      costes_iniciales_bonista = (sum_cib/100)*vc
+    this.costes_iniciales_bonista = costes_iniciales_bonista;
+    fbon.push((vc*-1)-costes_iniciales_bonista);
+    flujoemisor.push((vc*-1)+costes_iniciales_emisor)
 
     let escudo = []
 
@@ -154,8 +226,12 @@ export class ResultsBonoComponent implements OnInit {
     let ci = [];
     let flujoescudo = [];
 
-    let temp2 = 0;
+    let prima = 0
+    if(p_prima != 0){
+      prima = vn*(p_prima/100);
+    }
 
+    let temp2 = 0;
     for(let i = 1; i < p+1; i++){
 
       if(i < p){
@@ -163,6 +239,7 @@ export class ResultsBonoComponent implements OnInit {
         temp2 = temp/Math.pow(1+cok, i);
 
         fbon.push(temp);
+        flujoemisor.push(temp)
         ci.push(temp);
         fact.push(temp2);
       }
@@ -170,9 +247,10 @@ export class ResultsBonoComponent implements OnInit {
       if(i == p){
         let temp = BonoIndexado[i-1]*ntasa;
         ci.push(temp);
-        fbon.push(BonoIndexado[i-1] + temp);
+        fbon.push(BonoIndexado[i-1] + temp + prima);
+        flujoemisor.push(temp+BonoIndexado[i-1]+prima)
 
-        temp2 = (temp + BonoIndexado[i-1])/Math.pow(1+cok, i);
+        temp2 = (temp + BonoIndexado[i-1] + prima)/Math.pow(1+cok, i);
         fact.push(temp2);
       }
     }
@@ -180,7 +258,7 @@ export class ResultsBonoComponent implements OnInit {
     for(let i = 0; i < fbon.length; i++){
 
       if(i == 0){
-        flujoescudo.push(fbon[i]);
+        flujoescudo.push(fbon[i] + costes_iniciales_bonista + costes_iniciales_emisor);
       }
       else{
         flujoescudo.push(fbon[i] - escudo[i-1]);
@@ -201,18 +279,58 @@ export class ResultsBonoComponent implements OnInit {
       facp.push(temp3);
     }
 
-    let sumfact = 0;
-    let sumfap = 0;
+    //resultados
+
     
-    for(let i = 0; i < fact.length; i ++){
-      sumfact += fact[i];
-    }
-    for(let i = 0; i < fap.length; i ++){
-      sumfap += fap[i];
+    let temp3 = fbon.slice(1);
+    //valor actual
+    let va = this.npv(temp3,cok);
+    this.valor_actual = va.toFixed(2);
+    //utilidad perdida
+    let utped = va+(fbon[0]);
+    this.utilidad_p=utped.toFixed(2);
+    let sumFact=0;
+    for(let i = 0;i<fact.length;i++){
+      sumFact += fact[i];
     }
 
-    let duracion = sumfap/sumfact;
+    let sumFap=0;
+    for(let i = 0;i<fap.length;i++){
+      sumFap += fap[i];
+    }
+
+
+
+
+    let duracion = sumFap/sumFact;
     this.duracion = (duracion).toFixed(2);
+    console.log("aaa");
+    console.log(this.duracion);
+    let ratioconv = this.ratioconvx(facp,fact,cok);
+    this.ratioconv = ratioconv.toFixed(2);
+
+    let total = ratioconv+duracion;;
+    this.total=total.toFixed(2);
+    
+    let duracionmod = duracion/(1+cok);
+    this.duracion_mod=duracionmod.toFixed(2);
+
+    let irr = this.irrcalc(flujoemisor);
+    let tcea = 100*(Math.pow((irr+1),per)-1)
+    let tcea_365 = 100*(Math.pow((irr+1),per3)-1)
+    this.tcea=tcea.toFixed(5).concat("%");
+    this.tcea_365=tcea_365.toFixed(5).concat("%");
+
+    let irr2 = this.irrcalc(flujoescudo);
+    let tcea2 = 100*(Math.pow((irr2+1),per)-1);
+    let tcea_2_365 = 100*(Math.pow((irr2+1),per3)-1);
+    this.tcea2=tcea2.toFixed(5).concat("%");
+    this.tcea_2_365=tcea_2_365.toFixed(5).concat("%");
+
+    let trea = 100*(Math.pow((irr+1),per)-1);
+    let trea_365 = 100*(Math.pow((irr+1),per3)-1);
+    this.trea=(trea).toFixed(5).concat("%");
+    this.trea_365=(trea_365).toFixed(5).concat("%");
   }
 
 }

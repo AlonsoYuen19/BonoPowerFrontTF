@@ -18,7 +18,7 @@ export class CalcularBonoComponent implements OnInit {
   
   objetoTabla: ObjetoTabla | undefined;
 
-  displayedColumns: string[] = ['Indice', 'Inflacion_Periodo' ,'Bono', 'Bono_Indexado','Cupon_Interes', 'Flujo_Escudo', 'Flujo_Bonista', 'Flujo_Actual', 'FlujoXPlazo', 'Factor_Convexividad'];
+  displayedColumns: string[] = ['Indice', 'Inflacion_Periodo' ,'Bono', 'Bono_Indexado', 'Cupon_Interes', 'Flujo_Emisor', 'Flujo_Escudo', 'Flujo_Bonista', 'Flujo_Actual', 'FlujoXPlazo', 'Factor_Convexividad'];
   dataSource: ObjetoTabla[] = [];
 
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class CalcularBonoComponent implements OnInit {
       //this.getBonoById(this.bonoId)
       //this.getPeriodoCuponById(this.bonoActual.Periodo_Cupon_id)
       //this.AMERICANO(this.bonoActual.VN, this.bonoActual.VC, this.periodoCupon.dias, this.bonoActual.Anios, this.bonoActual.P_Tasa_Interes, this.bonoActual.P_Tasa_Anual_Descuento, this.bonoActual.P_Impuesto)
-      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [2.8, 2.5, 2.3])
+      this.AMERICANO(1500000, 1500000, 180, 10, 0.032, 0, 0.30, [2.8, 2.5, 2.3], 2, 2, 2, 2, 2)
     });
   }
 
@@ -43,68 +43,14 @@ export class CalcularBonoComponent implements OnInit {
     });
   }
 
-  irrcalc(arr: any){
-    let min = 0.0;
-    let max = 1.0;
-    let NPV = 1;
-    let g = 0;
-
-    while(Math.abs(NPV) > 0.000001){
-      g = (min + max) / 2;
-
-      NPV = 0;
-      for(let i = 0; i < arr.length; i++){
-        NPV += arr[i].valor/Math.pow(1+g, i);
-      }
-
-      if(NPV > 0){
-        min = g;
-      }
-      else{
-        max = g;
-      }
-    }
-    return g;
-  }
-
   convertasa(frec: any, tasa: any){
     return (Math.pow(1+tasa, frec/360) - 1);
   }
 
-  npv(arr: any, t: any){
-    let temp = 0;
-
-    for(let i = 0; i < arr.length; i++){
-      temp += arr[i].valor/Math.pow(1+t, i+1);
-    }
-
-    return temp;
-  }
-
-  ratioconvx(arr: any, arr1: any, cok: any){
-    let temp = 0;
-
-    for (let i = 0; i < arr.length; i++) {
-      temp += arr[i];
-    }
-
-    let temp2 = 0;
-
-    for (let i = 0; i < arr1.length; i++) {
-      temp2 += arr1[i];
-    }
-
-    let p = 360/180;
-
-    let res = temp/(Math.pow(1+cok, 2) * temp2 * Math.pow(p, 2));
-
-    return res;
-  }
-
-  AMERICANO(vn: any, vc: any, frec: any, anios: any, ti: any, td: any, ir: any, inflaciones: any){
+  AMERICANO(vn: any, vc: any, frec: any, anios: any, ti: any, td: any, ir: any, inflaciones: any, p_prima: any, p_estructuracion:any, p_colocacion:any, p_flotacion: any, p_cavali: any){
     let per = 360/frec;
     let p = Math.floor(per*anios);
-
+    
     let ntasa = this.convertasa(frec, ti);
     let cok = this.convertasa(frec, td);
 
@@ -144,7 +90,20 @@ export class CalcularBonoComponent implements OnInit {
     }
 
     let fbon = [];
-    fbon.push(vc*-1);
+    let flujoemisor = []
+
+    let sum_cie = p_estructuracion + p_cavali + p_colocacion + p_flotacion
+    let costes_iniciales_emisor = 0
+    if(sum_cie != 0)
+      costes_iniciales_emisor = (sum_cie/100)*vc
+
+    let sum_cib = p_cavali + p_flotacion
+    let costes_iniciales_bonista = 0
+    if(sum_cib != 0)
+      costes_iniciales_bonista = (sum_cib/100)*vc
+
+    fbon.push((vc*-1)-costes_iniciales_bonista);
+    flujoemisor.push((vc*-1)+costes_iniciales_emisor)
 
     let escudo = []
 
@@ -156,8 +115,12 @@ export class CalcularBonoComponent implements OnInit {
     let ci = [];
     let flujoescudo = [];
 
-    let temp2 = 0;
+    let prima = 0
+    if(p_prima != 0){
+      prima = vn*(p_prima/100);
+    }
 
+    let temp2 = 0;
     for(let i = 1; i < p+1; i++){
 
       if(i < p){
@@ -165,6 +128,7 @@ export class CalcularBonoComponent implements OnInit {
         temp2 = temp/Math.pow(1+cok, i);
 
         fbon.push(temp);
+        flujoemisor.push(temp)
         ci.push(temp);
         fact.push(temp2);
       }
@@ -172,9 +136,10 @@ export class CalcularBonoComponent implements OnInit {
       if(i == p){
         let temp = BonoIndexado[i-1]*ntasa;
         ci.push(temp);
-        fbon.push(BonoIndexado[i-1] + temp);
+        fbon.push(BonoIndexado[i-1] + temp + prima);
+        flujoemisor.push(temp+BonoIndexado[i-1]+prima)
 
-        temp2 = (temp + BonoIndexado[i-1])/Math.pow(1+cok, i);
+        temp2 = (temp + BonoIndexado[i-1] + prima)/Math.pow(1+cok, i);
         fact.push(temp2);
       }
     }
@@ -182,7 +147,7 @@ export class CalcularBonoComponent implements OnInit {
     for(let i = 0; i < fbon.length; i++){
 
       if(i == 0){
-        flujoescudo.push(fbon[i]);
+        flujoescudo.push(fbon[i] + costes_iniciales_bonista + costes_iniciales_emisor);
       }
       else{
         flujoescudo.push(fbon[i] - escudo[i-1]);
@@ -212,6 +177,7 @@ export class CalcularBonoComponent implements OnInit {
           Bono: "0",
           Bono_Indexado: "0",
           Cupon_Interes: "0",
+          Flujo_Emisor: flujoemisor[i].toFixed(2),
           Flujo_Escudo: flujoescudo[i].toFixed(2),
           Flujo_Bonista: fbon[i].toFixed(2),
           Flujo_Actual: "0",
@@ -226,6 +192,7 @@ export class CalcularBonoComponent implements OnInit {
           Bono: Bono[i-1].toFixed(2),
           Bono_Indexado: BonoIndexado[i-1].toFixed(2),
           Cupon_Interes: ci[i-1].toFixed(2),
+          Flujo_Emisor: flujoemisor[i].toFixed(2),
           Flujo_Escudo: flujoescudo[i].toFixed(2),
           Flujo_Bonista: fbon[i].toFixed(2),
           Flujo_Actual: fact[i-1].toFixed(2),

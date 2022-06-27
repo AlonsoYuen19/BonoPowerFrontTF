@@ -75,6 +75,7 @@ export interface ObjetoTabla {
     Bono: string,
     Bono_Indexado: string,
     Cupon_Interes: string;
+    Flujo_Emisor: string;
     Flujo_Escudo: string;
     Flujo_Bonista: string;
     Flujo_Actual: string;
