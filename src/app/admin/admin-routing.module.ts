@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CalcularBonoComponent } from './bonos/calcular-bono/calcular-bono.component';
+import { FAQComponent } from './bonos/faq/faq.component';
 import { ListBonoComponent } from './bonos/list-bono/list-bono.component';
 import { NewBonoComponent } from './bonos/new-bono/new-bono.component';
 import { ResultsBonoComponent } from './bonos/results-bono/results-bono/results-bono.component';
@@ -29,7 +30,11 @@ const routes: Routes = [{
     },
     {
       path:'usuario',
-      component:UsuarioInfoComponent
+      component:UsuarioInfoComponent,
+    },
+    {
+      path:'bonos/vista/faq',
+      component: FAQComponent,
     },
   ]
 }];
