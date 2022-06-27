@@ -12,7 +12,12 @@ import { TermsComponent } from '../terms/terms.component';
 })
 export class SignupComponent implements OnInit {
 
-  public signup: Signup = new Signup();
+  signup: any = {
+    email: "",
+    pwd: "",
+    name: "" 
+  };
+  
   public invalid: boolean = true;
   public checked: boolean = false;
   
@@ -27,6 +32,8 @@ export class SignupComponent implements OnInit {
 
   onSubmit(): void{
     this.authService.signUp(this.signup).subscribe((data:any)=>{
+      console.log(data)
+      console.log(this.signup)
       this.router.navigate(['/auth/login'])
     }, (error)=>{
       this.invalid = true;

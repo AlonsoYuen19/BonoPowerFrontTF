@@ -1,5 +1,5 @@
 export class Signup{
-	correo!: string;
-	password!: string;
-  	nombres!: string;
+	email!: string;
+	pwd!: string;
+  	name!: string;
 }

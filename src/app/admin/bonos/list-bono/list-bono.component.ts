@@ -9,17 +9,44 @@ import { BonoService } from '../shared/bono.service';
 })
 export class ListBonoComponent implements OnInit {
 
+  bonos: any = [];
   userId!: any;
+  bonoId: any = 0;
+
   constructor(private bonoService:BonoService, private router:Router, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe( params =>{
       this.userId = params['id']
+      this.getBonosUser(this.userId)
     });
   }
 
-  getBonosUser(){
-
+  getBonosUser(id: number){
+    this.bonoService.getAll(id).subscribe((data: any)=>{
+      console.log(data)
+      if(data != null){
+        for(let i = 0; i < data.length; i++){
+          this.bonos.push({
+            id: data[i].id, 
+            nombre: data[i].nombre, 
+            importancia: data[i].importancia, 
+            createdAt: new Date(data[i].createdAt)})
+        }
+      }
+      console.log(this.bonos)
+    });
   }
 
+  abrir(id: number){
+    this.router.navigate([`/admin/bonos/calcular/${id}`]);
+  }
+
+  nuevo(id: number){
+    this.router.navigate([`/admin/bonos/nuevo/${id}`]);
+  }
+
+  eliminar(id: number){
+    console.log(id)
+  }
 }

@@ -16,7 +16,7 @@ const routes: Routes = [{
       component:ListBonoComponent,
     },
     {
-      path:'bonos/nuevo',
+      path:'bonos/nuevo/:id',
       component:NewBonoComponent,
     },
     {

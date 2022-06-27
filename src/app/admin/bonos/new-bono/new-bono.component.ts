@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NewInflacionComponent } from '../new-inflacion/new-inflacion.component';
 import { InflacionReq, Periodo} from '../shared/bono.model';
 import { BonoService } from '../shared/bono.service';
@@ -14,6 +14,7 @@ import { BonoService } from '../shared/bono.service';
 export class NewBonoComponent implements OnInit {
 
   public invalid: boolean = true;
+  userId!: any;
 
   bono={
     Nombre: "",
@@ -45,10 +46,13 @@ export class NewBonoComponent implements OnInit {
   dataSource : any = [];
 
 
-  constructor(private bonoService:BonoService, private router:Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
+  constructor(private bonoService:BonoService, private router:Router, public dialog: MatDialog, private _snackBar: MatSnackBar, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getAllPeriodos();
+    this.route.params.subscribe( params =>{
+      this.userId = params['id']
+      this.getAllPeriodos();
+    });
   }
 
   crearBono(){
@@ -72,7 +76,8 @@ export class NewBonoComponent implements OnInit {
       p_colocacion: this.bono.P_Colocacion,
       p_flotacion: this.bono.P_Flotacion,
       p_cavali: this.bono.P_Cavali,
-      tipo_moneda: this.bono.Tipo_Moneda
+      tipo_moneda: this.bono.Tipo_Moneda,
+      userId: this.userId,
     }
     const EmisionDate = String(this.bono.Emision).split("-").map(Number);
     bonoreq.emision.setFullYear(EmisionDate[0], EmisionDate[1], EmisionDate[2]);

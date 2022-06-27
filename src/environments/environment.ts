@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiBase: 'https://bonopower.herokuapp.com',
+  userId: 0,
   RETRIES: 2
 };
 

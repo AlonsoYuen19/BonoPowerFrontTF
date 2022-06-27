@@ -1,1 +1,45 @@
-<p>list-bono works!</p>
+<div class="d-flex justify-content-end">
+    <button mat-button (click)="nuevo(userId)" class="margenBoton" mat-raised-button color="primary">Nuevo Bono</button>
+</div>
+<section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" style="text-align: center;">Histotial de Registro de Calculos de Bonos</h5>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Importancia</th>
+                    <th scope="col">Acción</th>                    
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let bono of bonos; index as i">
+                    <th scope="row">{{i + 1}}</th>
+                    <td>{{bono.createdAt}}</td>
+                    <td>{{bono.nombre}}</td>
+                    <td> {{bono.importancia}}</td>
+                    <td>                 
+                      <div class="col-sm-10">
+                        <button mat-button (click)="abrir(bono.id)" class="margenBoton" mat-raised-button color="primary">Abrir Bono</button>
+                        <button mat-button (click)="eliminar(bono.id)" class="margenBoton" mat-raised-button color="warn">Eliminar Bono</button>
+                    </div></td>                   
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>  
+        </div>
+    </div>
+</section>

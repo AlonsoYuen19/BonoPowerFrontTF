@@ -14,7 +14,7 @@ export class AuthService {
   constructor(private http:HttpClient) { }
 
   logIn(login_:Login){
-    return this.http.post(`${this.apiBase}/user`, login_);
+    return this.http.get(`${this.apiBase}/user/email/${login_.email}`);
   }
 
   signUp(signup_:Signup){

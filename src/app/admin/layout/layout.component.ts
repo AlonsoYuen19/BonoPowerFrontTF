@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-layout',
@@ -8,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LayoutComponent implements OnInit {
 
+  userId: number = environment.userId;
   constructor(
     private router:Router
   ) { }
@@ -23,5 +25,8 @@ export class LayoutComponent implements OnInit {
     this.router.navigate(['/auth/login']);
   }
 
+  listar(): void{
+    this.router.navigate([`/admin/bonos/${this.userId}`]);
+  }
 }
 
