@@ -181,9 +181,11 @@ export class ResultsBonoComponent implements OnInit {
       InflacionesAnios.push(0);
     }
 
-    InflacionesAnios[0] = inflaciones[0];
-    InflacionesAnios[1] = inflaciones[1];
-    InflacionesAnios[2] = inflaciones[2];
+    if(inflaciones.length != 0){
+      for(let i = 0; i < inflaciones.length; i++){
+        InflacionesAnios[inflaciones[i].anio - 1] = inflaciones[i].inflacion
+      }
+    }
 
     for(let i = 0; i < InflacionesAnios.length; i++){
       let inflacion_en_el_periodo = 0;
@@ -347,7 +349,7 @@ export class ResultsBonoComponent implements OnInit {
     .subscribe((data: any)=>{
       if(data != null){
         for(let i = 0; i < data.length; i++){
-          this.inflaciones.push(data[i].inflacion)
+          this.inflaciones = data;
         }
       }
     });

@@ -12,6 +12,8 @@
             placeholder="Anio"
             name="Anio"
             [(ngModel)]="data.anio"
+            min="1" 
+            max="30"
             #Anio="ngModel"
             required
           />
@@ -31,6 +33,8 @@
             placeholder="Inflacion"
             name="Inflacion"
             [(ngModel)]="data.inflacion"
+            min="0" 
+            max="999"
             #Inflacion="ngModel"
             required
           />

@@ -16,6 +16,7 @@
                 placeholder="Valor Nominal"
                 [(ngModel)]="bono.VN"
                 name="VN"
+                min="1"
                 #VN="ngModel"
                 required
               />
@@ -34,6 +35,7 @@
                 type="number"
                 placeholder="Valor Comercial"
                 [(ngModel)]="bono.VC"
+                min="1"
                 name="VC"
                 #VC="ngModel"
                 required
@@ -54,6 +56,8 @@
                 placeholder="Nº de Años"
                 [(ngModel)]="bono.Anios"
                 name="Anios"
+                min="1" 
+                max="30"
                 #Anios="ngModel"
                 required
               />
@@ -115,6 +119,8 @@
                 placeholder="Tasa de Interés"
                 [(ngModel)]="bono.P_Tasa_Interes"
                 name="P_Tasa_Interes"
+                min="0" 
+                max="999"
                 #P_Tasa_Interes="ngModel"
                 required
               />
@@ -134,6 +140,8 @@
                 placeholder="Tasa Anual de Descuento"
                 [(ngModel)]="bono.P_Tasa_Anual_Descuento"
                 name="P_Tasa_Anual_Descuento"
+                min="0" 
+                max="999"
                 #P_Tasa_Anual_Descuento="ngModel"
                 required
               />
@@ -153,6 +161,8 @@
                 placeholder="Impuesto a la Renta"
                 [(ngModel)]="bono.P_Impuesto"
                 name="P_Impuesto"
+                min="0" 
+                max="999"
                 #P_Impuesto="ngModel"
                 required
               />
@@ -206,6 +216,8 @@
                 placeholder="Impuesto a la Renta"
                 [(ngModel)]="bono.Importancia"
                 name="Importancia"
+                min="0" 
+                max="5"
                 #Importancia="ngModel"
                 required
               />
@@ -237,6 +249,8 @@
                 placeholder="%Prima"
                 name="P_Prima"
                 [(ngModel)]="bono.P_Prima"
+                min="0" 
+                max="999"
                 #P_Prima="ngModel"
                 required
               />
@@ -256,6 +270,8 @@
                 placeholder="%Estructuracion"
                 name="P_Estructuracion"
                 [(ngModel)]="bono.P_Estructuracion"
+                min="0" 
+                max="999"
                 #P_Estructuracion="ngModel"
                 required
               />
@@ -275,6 +291,8 @@
                 placeholder="%Colocacion"
                 name="P_Colocacion"
                 [(ngModel)]="bono.P_Colocacion"
+                min="0" 
+                max="999"
                 #P_Colocacion="ngModel"
                 required
               />
@@ -294,6 +312,8 @@
                 placeholder="%Flotacion"
                 name="P_Flotacion"
                 [(ngModel)]="bono.P_Flotacion"
+                min="0" 
+                max="999"
                 #P_Flotacion="ngModel"
                 required
               />
@@ -313,6 +333,8 @@
                 placeholder="%CAVALI"
                 name="P_Cavali"
                 [(ngModel)]="bono.P_Cavali"
+                min="0" 
+                max="999"
                 #P_Cavali="ngModel"
                 required
               />

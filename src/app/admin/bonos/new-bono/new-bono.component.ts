@@ -129,6 +129,10 @@ export class NewBonoComponent implements OnInit {
               verificar = true;
             }
           }
+
+          if(result.anio > this.bono.Anios){
+            verificar = true;
+          }
         }
 
         if(verificar == false){
@@ -136,7 +140,7 @@ export class NewBonoComponent implements OnInit {
           this.dataSource= [...this.dataSource];
         }
         else{
-          this.openSnackBar("YA EXISTE UNA INFLACION PARA ESTE AÑO", "ERROR")
+          this.openSnackBar("YA EXISTE UNA INFLACION PARA ESTE AÑO O EL AÑO SOBREPASA EL NUMERO DE AÑOS DEL BONO", "ERROR")
         }
       }
     });

@@ -47,6 +47,12 @@ export class ListBonoComponent implements OnInit {
   }
 
   eliminar(id: number){
-    console.log(id)
+    this.bonoService.deleteBono(id).subscribe((data: any)=>{
+      console.log(data)
+      let currentUrl = this.router.url;
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate([currentUrl]);
+    });
   }
 }
